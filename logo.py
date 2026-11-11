@@ -1,2 +1,8 @@
 def exibir_logo():
-    print("Logo do informasam")
+    return [
+        "       .-------------.",
+        "       |  >_         |",
+        "       |             |",
+        "       |             |",
+        "       '-------------'"
+    ]
