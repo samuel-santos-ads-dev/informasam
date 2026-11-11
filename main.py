@@ -14,6 +14,8 @@ def main():
     print(round(system_info.memoria_disponivel(), 2))
     print(round(system_info.memoria_utilizada(), 2))
     print(system_info.nucleos_cpu())
+    print(system_info.threads_cpu())
+    print(round(system_info.frequencia_cpu(), 2))
 
 if(__name__ == "__main__"):
     main()

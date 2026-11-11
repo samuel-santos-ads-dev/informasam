@@ -42,4 +42,21 @@ def memoria_utilizada():
     return memoria_total() - memoria_disponivel()
 
 def nucleos_cpu():
+    with open("/proc/cpuinfo", "r") as arquivo:
+        for linha in arquivo:
+            if(linha.startswith("cpu cores")):
+                nucleos = linha.split(":")[1].strip()
+                return int(nucleos)
+
+def threads_cpu():
     return os.cpu_count()
+
+def frequencia_cpu():
+    with open("/proc/cpuinfo", "r") as arquivo:
+        f_por_nucleo = list()
+        for linha in arquivo:
+            if(linha.startswith("cpu MHz")):
+                f_por_nucleo.append(float(linha.split(":")[1].strip()))
+        frequemhz = sum(f_por_nucleo) / len(f_por_nucleo)
+        frequencia_ghz = frequemhz / 1000
+    return frequencia_ghz
