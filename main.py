@@ -1,4 +1,5 @@
 
+import shutil
 import logo
 import system_info
 import colors
@@ -52,26 +53,55 @@ def centralizar_lista(lista, tamanho):
 
 def main():
     informacoes = obter_informacoes()
-    informacoes = formatar_informacoes(informacoes)
+
+    largura_rotulo = max(len(rotulo) for rotulo, valor in informacoes)
+
+    largura_informacoes = max(
+        largura_rotulo + 2 + len(valor)
+        for rotulo, valor in informacoes
+    )
 
     logo_linhas = logo.exibir_logo()
-
-    tamanho = max(len(informacoes), len(logo_linhas))
-
-    logo_final = centralizar_lista(logo_linhas, tamanho)
-    informacoes_final = centralizar_lista(informacoes, tamanho)
-
     largura_logo = max(len(linha) for linha in logo_linhas)
+
+    largura_terminal = shutil.get_terminal_size(
+        fallback=(80, 24)
+    ).columns
+
     espacamento = 6
 
-    for esquerda, direita in zip(logo_final, informacoes_final):
-        if direita:
-            rotulo, valor = direita
-            direita = rotulo + valor
-        else:
-            direita = ""
+    if largura_logo + espacamento + largura_informacoes <= largura_terminal:
+        informacoes = formatar_informacoes(informacoes)
 
-        print(esquerda.ljust(largura_logo + espacamento) + direita)
+        tamanho = max(len(informacoes), len(logo_linhas))
+
+        logo_final = centralizar_lista(logo_linhas, tamanho)
+        informacoes_final = centralizar_lista(informacoes, tamanho)
+
+        for indice, (esquerda, direita) in enumerate(
+            zip(logo_final, informacoes_final)
+        ):
+            if direita:
+                rotulo, valor = direita
+                direita = rotulo + valor
+            else:
+                direita = ""
+
+            esquerda = esquerda.ljust(largura_logo + espacamento)
+            esquerda = logo.colorir_linha(esquerda, indice)
+
+            print(esquerda + direita)
+
+    else:
+        for indice, linha in enumerate(logo_linhas):
+            print(logo.colorir_linha(linha, indice))
+
+        print()
+
+        informacoes = formatar_informacoes(informacoes)
+
+        for rotulo, valor in informacoes:
+            print(rotulo + valor)
 
 
 if __name__ == "__main__":

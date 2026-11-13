@@ -7,6 +7,9 @@ def sistema_operacional():
 def distro():
     return platform.freedesktop_os_release()["PRETTY_NAME"]
 
+def id_distro():
+    return platform.freedesktop_os_release().get("ID", "linux").lower()
+
 def kernel():
     return platform.release()
 
