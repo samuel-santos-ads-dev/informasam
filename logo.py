@@ -1,5 +1,6 @@
 def exibir_logo():
     return [
+        "       |  Linux      |",
         "       .-------------.",
         "       |  >_         |",
         "       |             |",
